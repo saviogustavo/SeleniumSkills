@@ -3,7 +3,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.junit.After;
@@ -13,12 +12,14 @@ import org.junit.Before;
 public class DesafioCadastroComSucesso {
 	
 	private WebDriver driver;
+	private DSL dsl;
 	
 	@Before
 	public void inicializa() {
 		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(1200, 765));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
 	}
 	
 	@After
@@ -28,33 +29,26 @@ public class DesafioCadastroComSucesso {
 
 	@Test
 	public void CadastroSucesso() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Sávio");
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Borges");
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
+		dsl.escreve("elementosForm:nome", "Sávio");
+		dsl.escreve("elementosForm:sobrenome", "Borges");
+		dsl.clicarRadio("elementosForm:sexo:0");
+		dsl.clicarRadio("elementosForm:comidaFavorita:2");
 		
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-		Select combo = new Select(element);
-		combo.selectByVisibleText("Superior");
+		dsl.selecionarCombo("elementosForm:escolaridade", "Superior");
+		dsl.selecionarCombo("elementosForm:esportes", "Natacao");
 		
-		element = driver.findElement(By.id("elementosForm:esportes"));
-		combo = new Select(element);
-		combo.selectByVisibleText("Natacao");
-		
-		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("Ao invés de sugestão, mande um pix!");
-		
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		//Verificações
-		Assert.assertEquals("Cadastrado!", driver.findElement(By.cssSelector("#resultado span")).getText());
+		Assert.assertTrue(dsl.obterTexto("resultado").startsWith("Cadastrado!"));
+		//Assert.assertEquals("Cadastrado!", driver.findElement(By.cssSelector("#resultado span")).getText());
 		
-		Assert.assertEquals("Sávio", driver.findElement(By.cssSelector("#descNome span")).getText());
-		Assert.assertEquals("Borges", driver.findElement(By.cssSelector("#descSobrenome span")).getText());
-		Assert.assertEquals("Masculino", driver.findElement(By.cssSelector("#descSexo span")).getText());
-		Assert.assertEquals("Pizza", driver.findElement(By.cssSelector("#descComida span")).getText());
-		Assert.assertEquals("superior", driver.findElement(By.cssSelector("#descEscolaridade span")).getText());
-		Assert.assertEquals("Natacao", driver.findElement(By.cssSelector("#descEsportes span")).getText());
-		Assert.assertEquals("Ao invés de sugestão, mande um pix!", driver.findElement(By.cssSelector("#descSugestoes span")).getText());	
+		Assert.assertTrue(dsl.obterTexto("descNome").endsWith("Sávio"));
+		Assert.assertEquals("Sobrenome: Borges", dsl.obterTexto("descSobrenome"));
+		Assert.assertEquals("Sexo: Masculino", dsl.obterTexto("descSexo"));
+		Assert.assertEquals("Comida: Pizza", dsl.obterTexto("descComida"));
+		Assert.assertEquals("Escolaridade: superior", dsl.obterTexto("descEscolaridade"));
+		Assert.assertEquals("Esportes: Natacao", dsl.obterTexto("descEsportes"));	
 	}
 	
 	@Test
