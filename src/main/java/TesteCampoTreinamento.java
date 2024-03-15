@@ -48,8 +48,8 @@ public class TesteCampoTreinamento {
 	
 	@Test
 	public void checkBox() {
-		driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
-		Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:2")).isSelected());
+		dsl.clicarCheck("elementosForm:comidaFavorita:2");
+		Assert.assertTrue(dsl.isCheckMarcado("elementosForm:comidaFavorita:2"));
 	}
 	
 	@Test

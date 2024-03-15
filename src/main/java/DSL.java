@@ -27,6 +27,14 @@ public class DSL {
 		return driver.findElement(By.id(id)).isSelected();
 	}
 	
+	public void clicarCheck(String id) {
+		driver.findElement(By.id(id)).click();
+	}
+	
+	public boolean isCheckMarcado(String id) {
+		return driver.findElement(By.id(id)).isSelected();
+	}
+	
 	public void selecionarCombo(String id, String valor) {
 		WebElement element = driver.findElement(By.id(id));
 		Select combo = new Select(element);

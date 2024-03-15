@@ -1,10 +1,8 @@
 import org.junit.Test;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -53,7 +51,7 @@ public class DesafioCadastroComSucesso {
 	
 	@Test
 	public void ValidarNome() {
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Nome eh obrigatorio", alert.getText());
@@ -63,8 +61,8 @@ public class DesafioCadastroComSucesso {
 	
 	@Test
 	public void ValidarSobrenome() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Sávio");
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.escreve("elementosForm:nome", "Sávio");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Sobrenome eh obrigatorio", alert.getText());
@@ -74,9 +72,9 @@ public class DesafioCadastroComSucesso {
 	
 	@Test
 	public void ValidarSexo() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Sávio");
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Borges");
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.escreve("elementosForm:nome", "Sávio");
+		dsl.escreve("elementosForm:sobrenome", "Borges");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Sexo eh obrigatorio", alert.getText());
@@ -86,12 +84,12 @@ public class DesafioCadastroComSucesso {
 	
 	@Test
 	public void ValidarComidaVegetariana() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Sávio");
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Borges");
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
-		driver.findElement(By.id("elementosForm:comidaFavorita:3")).click();
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.escreve("elementosForm:nome", "Sávio");
+		dsl.escreve("elementosForm:sobrenome", "Borges");
+		dsl.clicarRadio("elementosForm:sexo:0");
+		dsl.clicarRadio("elementosForm:comidaFavorita:0");
+		dsl.clicarRadio("elementosForm:comidaFavorita:3");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Tem certeza que voce eh vegetariano?", alert.getText());
@@ -101,14 +99,13 @@ public class DesafioCadastroComSucesso {
 	
 	@Test
 	public void ValidarEsporte() {
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Sávio");
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Borges");
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
-		Select combo = new Select(driver.findElement(By.id("elementosForm:esportes")));
-		combo.selectByVisibleText("Natacao");
-		combo.selectByVisibleText("O que eh esporte?");
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.escreve("elementosForm:nome", "Sávio");
+		dsl.escreve("elementosForm:sobrenome", "Borges");
+		dsl.clicarRadio("elementosForm:sexo:0");
+		dsl.clicarRadio("elementosForm:comidaFavorita:0");
+		dsl.selecionarCombo("elementosForm:esportes", "Natacao");
+		dsl.selecionarCombo("elementosForm:esportes", "O que eh esporte?");
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
