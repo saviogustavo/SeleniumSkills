@@ -10,12 +10,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class FramesEJanelas {
 	
 	private WebDriver driver;
+	private DSL dsl;
 	
 	@Before
 	public void inicializa() {
 		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(1200, 765));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
 	}
 	
 	@After
@@ -26,13 +28,13 @@ public class FramesEJanelas {
 	@Test
 	public void InteragindoComIframe() {
 		driver.switchTo().frame("frame1");
-		driver.findElement(By.id("frameButton")).click();
+		dsl.clicarBotao("frameButton");
 		Alert alert = driver.switchTo().alert();
 		String msg = alert.getText();
 		alert.accept();
 		
 		driver.switchTo().defaultContent();
-		driver.findElement(By.id("elementosForm:nome")).sendKeys(msg);
+		dsl.escreve("elementosForm:nome", msg);
 	}
 	
 	@Test
