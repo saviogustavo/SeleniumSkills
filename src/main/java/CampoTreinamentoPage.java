@@ -11,6 +11,10 @@ public class CampoTreinamentoPage {
 		dsl.escreve("elementosForm:nome", nome);
 	}
 	
+	public String getNome() {
+		return dsl.obterValorCampo("elementosForm:nome");
+	}
+	
 	public void setSobrenome(String sobrenome) {
 		dsl.escreve("elementosForm:sobrenome", sobrenome);
 	}
@@ -42,6 +46,14 @@ public class CampoTreinamentoPage {
 	public void setEsporte(String... valores) {
 		for(String valor: valores)
 			dsl.selecionarCombo("elementosForm:esportes", valor);
+	}
+	
+	public void setSugestao(String valor) {
+		dsl.escreve("elementosForm:sugestoes", valor);
+	}
+	
+	public String getSugestao() {
+		return dsl.obterValorCampo("elementosForm:sugestoes");
 	}
 	
 	public void cadastrar() {
